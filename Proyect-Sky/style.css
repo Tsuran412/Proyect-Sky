@@ -1,0 +1,554 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Georgia', serif;
+}
+
+body {
+    background:
+        radial-gradient(ellipse 85% 45% at 50% 88%,
+            rgba(255, 210, 140, 0.45) 0%,
+            rgba(255, 180, 110, 0.15) 40%,
+            transparent 70%),
+        linear-gradient(
+            180deg,
+            #1a1030 0%,
+            #3d2255 18%,
+            #7a3d6e 38%,
+            #c46a7a 56%,
+            #ec9a72 74%,
+            #ffd09a 90%,
+            #fff0d0 100%
+        );
+}
+
+/* ============================================
+   PARTÍCULAS
+   ============================================ */
+#particles {
+    position: fixed;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+}
+
+/* ============================================
+   MONTAÑAS BRUMOSAS
+   ============================================ */
+#mountains {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    height: 45vh;
+    z-index: 2;
+    pointer-events: none;
+}
+.mountain-back  { fill: #7a4560; opacity: 0.55; filter: blur(5px); }
+.mountain-mid   { fill: #5a3050; opacity: 0.85; filter: blur(2px); }
+.mountain-front { fill: #351a30; opacity: 1;    filter: blur(0);   }
+
+/* ============================================
+   FLORES LUMINOSAS
+   ============================================ */
+#flowers {
+    position: fixed;
+    inset: 0;
+    z-index: 6;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 1.5s ease 0.6s;
+}
+#flowers.reveal { opacity: 1; }
+
+.flower {
+    position: absolute;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    pointer-events: none;
+    transition: transform 0.5s ease;
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+}
+#flowers.reveal .flower { pointer-events: auto; }
+
+.flower svg { width: 100%; height: 100%; overflow: visible; display: block; }
+.flower .petals ellipse {
+    fill: rgba(255, 210, 130, 0.28);
+    transition: fill 0.6s ease;
+}
+.flower .flower-center {
+    fill: rgba(255, 235, 190, 0.55);
+    filter: blur(0.5px);
+    transition: fill 0.6s ease, filter 0.6s ease;
+}
+.flower:hover .petals ellipse,
+.flower.is-lit .petals ellipse { fill: rgba(255, 235, 175, 0.9); }
+.flower:hover .flower-center,
+.flower.is-lit .flower-center {
+    fill: #fffbe0;
+    filter: blur(0) drop-shadow(0 0 8px #ffe8a0) drop-shadow(0 0 18px #ffcc66);
+}
+.flower:hover { transform: scale(1.08); }
+.flower.is-lit { transform: scale(1.15); }
+
+.flower.is-lit::after {
+    content: '';
+    position: absolute;
+    inset: -18px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 230, 180, 0.75);
+    animation: bloomRing 0.9s ease-out;
+    pointer-events: none;
+}
+@keyframes bloomRing {
+    0%   { transform: scale(0.5); opacity: 1; }
+    100% { transform: scale(1.9); opacity: 0; }
+}
+
+/* ============================================
+   INTRO: SOBRE
+   ============================================ */
+#intro {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 1.2s ease;
+}
+#intro.fade-out { opacity: 0; pointer-events: none; }
+
+#envelope {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2.5rem;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    touch-action: none;
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+    animation: floatEnvelope 4s ease-in-out infinite;
+}
+@keyframes floatEnvelope {
+    0%, 100% { translate: 0 0; }
+    50%      { translate: 0 -14px; }
+}
+
+.envelope-glow {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    width: 300px;
+    height: 300px;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(
+        circle,
+        rgba(255, 235, 180, 0.45) 0%,
+        rgba(255, 210, 130, 0.2) 40%,
+        transparent 72%
+    );
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.8;
+    animation: pulseGlow 3.5s ease-in-out infinite;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+@keyframes pulseGlow {
+    0%, 100% { transform: translate(-50%, -50%) scale(1);    opacity: 0.7; }
+    50%      { transform: translate(-50%, -50%) scale(1.15); opacity: 1;   }
+}
+#envelope.charging .envelope-glow {
+    animation: none;
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(calc(1 + var(--progress) * 0.4));
+    background: radial-gradient(
+        circle,
+        rgba(255, 245, 200, 0.75) 0%,
+        rgba(255, 200, 120, 0.4) 40%,
+        transparent 75%
+    );
+}
+
+.charge-ring {
+    --progress: 0;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    width: 260px;
+    height: 260px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: conic-gradient(
+        #fff2b8 0deg,
+        #ffb347 calc(var(--progress) * 360deg),
+        transparent calc(var(--progress) * 360deg)
+    );
+    -webkit-mask-image: radial-gradient(circle, transparent 60%, black 66%);
+    mask-image: radial-gradient(circle, transparent 60%, black 66%);
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+#envelope.charging .charge-ring { opacity: 1; }
+
+.envelope-svg {
+    position: relative;
+    z-index: 2;
+    width: 220px;
+    height: auto;
+    filter:
+        drop-shadow(0 0 18px rgba(255, 225, 160, 0.6))
+        drop-shadow(0 0 40px rgba(255, 190, 120, 0.35));
+    transition: filter 0.3s ease, transform 0.3s ease;
+}
+#envelope.charging .envelope-svg {
+    filter:
+        drop-shadow(0 0 calc(18px + 30px * var(--progress)) rgba(255, 235, 180, 0.9))
+        drop-shadow(0 0 calc(40px + 60px * var(--progress)) rgba(255, 200, 130, 0.6));
+    transform: scale(calc(1 + var(--progress) * 0.08));
+}
+
+.envelope-flap {
+    transform-box: view-box;
+    transform-origin: 100px 40px;
+    transform: rotateX(0deg);
+}
+.seal, .seal-glow {
+    transform-box: fill-box;
+    transform-origin: center;
+}
+
+#envelope.opening .seal,
+#envelope.opening .seal-glow {
+    animation: sealBurst 0.6s ease-out forwards;
+}
+@keyframes sealBurst {
+    0%   { transform: scale(1);   opacity: 1; filter: brightness(1);   }
+    40%  { transform: scale(2);   opacity: 1; filter: brightness(2.5); }
+    100% { transform: scale(3.5); opacity: 0; filter: brightness(3);   }
+}
+#envelope.opening .envelope-flap {
+    transform: rotateX(180deg);
+    transition: transform 0.9s cubic-bezier(0.5, 0, 0.5, 1) 0.35s;
+}
+
+.hint {
+    position: relative;
+    z-index: 3;
+    color: #fdf6e3;
+    font-size: 1rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-shadow: 0 0 15px rgba(255, 220, 150, 0.7);
+    animation: blinkHint 2.6s ease-in-out infinite;
+    transition: opacity 0.35s ease;
+    pointer-events: none;
+}
+#envelope.charging .hint,
+#envelope.opening .hint { opacity: 0; animation: none; }
+@keyframes blinkHint {
+    0%, 100% { opacity: 0.35; }
+    50%      { opacity: 0.9;  }
+}
+
+/* ============================================
+   ESCENA PRINCIPAL
+   ============================================ */
+.scene {
+    position: relative;
+    z-index: 5;
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 4rem;
+    padding: 1rem 2rem;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 1.4s ease, visibility 0s linear 1.4s;
+}
+.scene.reveal {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition: opacity 1.4s ease, visibility 0s;
+}
+
+.character-wrap {
+    order: 2;
+    flex: 0 0 auto;
+    opacity: 0;
+    transform: translateY(120px);
+    transition: opacity 2.5s ease, transform 2.5s ease;
+}
+.character-wrap.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.character-float {
+    position: relative;
+    animation: float 4s ease-in-out infinite;
+}
+@keyframes float {
+    0%, 100% { translate: 0 0; }
+    50%      { translate: 0 -22px; }
+}
+
+.character {
+    display: block;
+    width: 230px;
+    position: relative;
+    z-index: 2;
+    filter: drop-shadow(0 0 25px rgba(255, 220, 150, 0.7))
+            drop-shadow(0 0 60px rgba(255, 200, 130, 0.4));
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+.glow {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 340px; height: 340px;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(
+        circle,
+        rgba(255, 225, 160, 0.55) 0%,
+        rgba(255, 200, 130, 0.25) 35%,
+        transparent 70%
+    );
+    border-radius: 50%;
+    z-index: 1;
+    animation: pulseGlow 3.5s ease-in-out infinite;
+    pointer-events: none;
+}
+
+/* ============================================
+   MENSAJE EN FORMA DE PERGAMINO (con scroll interno)
+   ============================================ */
+.message {
+    position: relative;
+    order: 1;
+    flex: 0 1 680px;
+    max-width: 680px;
+    max-height: 80vh;
+    padding: 2.2rem 2.5rem 2.5rem;
+
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    background-color: #f2e0b8;
+    background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M 4 36 Q 4 4 36 4' fill='none' stroke='%23a67533' stroke-width='1.6' stroke-linecap='round'/%3E%3Cpath d='M 11 36 Q 11 11 36 11' fill='none' stroke='%23a67533' stroke-width='0.7' stroke-linecap='round' opacity='0.55'/%3E%3Ccircle cx='4' cy='4' r='2.2' fill='%23a67533'/%3E%3C/svg%3E"),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M 36 36 Q 36 4 4 4' fill='none' stroke='%23a67533' stroke-width='1.6' stroke-linecap='round'/%3E%3Cpath d='M 29 36 Q 29 11 4 11' fill='none' stroke='%23a67533' stroke-width='0.7' stroke-linecap='round' opacity='0.55'/%3E%3Ccircle cx='36' cy='4' r='2.2' fill='%23a67533'/%3E%3C/svg%3E"),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M 4 4 Q 4 36 36 36' fill='none' stroke='%23a67533' stroke-width='1.6' stroke-linecap='round'/%3E%3Cpath d='M 11 4 Q 11 29 36 29' fill='none' stroke='%23a67533' stroke-width='0.7' stroke-linecap='round' opacity='0.55'/%3E%3Ccircle cx='4' cy='36' r='2.2' fill='%23a67533'/%3E%3C/svg%3E"),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M 36 4 Q 36 36 4 36' fill='none' stroke='%23a67533' stroke-width='1.6' stroke-linecap='round'/%3E%3Cpath d='M 29 4 Q 29 29 4 29' fill='none' stroke='%23a67533' stroke-width='0.7' stroke-linecap='round' opacity='0.55'/%3E%3Ccircle cx='36' cy='36' r='2.2' fill='%23a67533'/%3E%3C/svg%3E"),
+        radial-gradient(ellipse 65% 55% at 18% 28%, rgba(170, 115, 55, 0.20) 0%, transparent 65%),
+        radial-gradient(ellipse 55% 50% at 82% 72%, rgba(150, 95, 45, 0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 45% 40% at 72% 18%, rgba(180, 130, 70, 0.12) 0%, transparent 55%),
+        radial-gradient(ellipse 50% 45% at 22% 82%, rgba(160, 105, 50, 0.14) 0%, transparent 55%),
+        repeating-linear-gradient(88deg, transparent 0, transparent 5px, rgba(140, 95, 50, 0.025) 5px, rgba(140, 95, 50, 0.025) 6px),
+        linear-gradient(145deg, #f8ecca 0%, #f2e2b5 40%, #e9d29b 100%);
+
+    background-position:
+        14px 14px,
+        calc(100% - 14px) 14px,
+        14px calc(100% - 14px),
+        calc(100% - 14px) calc(100% - 14px),
+        center, center, center, center, center, center;
+    background-repeat: no-repeat, no-repeat, no-repeat, no-repeat,
+                       no-repeat, no-repeat, no-repeat, no-repeat, repeat, no-repeat;
+    background-size:
+        36px 36px, 36px 36px, 36px 36px, 36px 36px,
+        auto, auto, auto, auto, auto, auto;
+
+    border-radius: 5px 10px 6px 8px;
+
+    box-shadow:
+        inset 0 0 45px rgba(140, 90, 40, 0.25),
+        inset 0 0 10px rgba(100, 55, 20, 0.28),
+        inset 0 1px 2px rgba(255, 240, 200, 0.6),
+        0 12px 40px rgba(0, 0, 0, 0.55),
+        0 0 50px rgba(255, 200, 120, 0.30),
+        0 0 100px rgba(255, 180, 100, 0.15);
+
+    opacity: 0;
+    transform: translateY(25px);
+    transition: opacity 2s ease, transform 2s ease;
+}
+.message.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ---------- Título del pergamino (fijo arriba) ---------- */
+.message-title {
+    flex: 0 0 auto;
+    position: relative;
+    margin-bottom: 1.1rem;
+    padding-bottom: 0.85rem;
+
+    font-family: 'Georgia', 'Times New Roman', serif;
+    font-size: clamp(1.35rem, 2.3vw, 1.75rem);
+    font-style: normal;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-align: center;
+
+    /* Oro metálico (gradiente en el texto) */
+    color: #b8832a;                                 /* fallback */
+    background: linear-gradient(
+        180deg,
+        #fff4c2 0%,
+        #f0cc6a 30%,
+        #b8832a 55%,
+        #e8b551 78%,
+        #f5d982 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    filter:
+        drop-shadow(0 1px 0 rgba(80, 45, 10, 0.28))
+        drop-shadow(0 0 12px rgba(255, 200, 100, 0.5));
+
+    user-select: none;
+}
+
+/* Línea decorativa bajo el título */
+.message-title::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    width: 55%;
+    height: 1px;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(166, 117, 51, 0.65) 25%,
+        rgba(200, 150, 60, 0.9) 50%,
+        rgba(166, 117, 51, 0.65) 75%,
+        transparent 100%
+    );
+}
+
+/* Brillo pulsante suave cuando el pergamino ya es visible */
+.message.visible .message-title {
+    animation: titleGlow 4s ease-in-out infinite;
+}
+@keyframes titleGlow {
+    0%, 100% {
+        filter:
+            drop-shadow(0 1px 0 rgba(80, 45, 10, 0.28))
+            drop-shadow(0 0 8px rgba(255, 200, 100, 0.35));
+    }
+    50% {
+        filter:
+            drop-shadow(0 1px 0 rgba(80, 45, 10, 0.28))
+            drop-shadow(0 0 16px rgba(255, 210, 130, 0.7));
+    }
+}
+
+/* ---------- Zona scrolleable dentro del pergamino ---------- */
+.message-scroll {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 12px;
+
+    font-family: 'Georgia', 'Times New Roman', serif;
+    font-size: clamp(0.95rem, 1.5vw, 1.15rem);
+    font-style: italic;
+    line-height: 1.8;
+    letter-spacing: 0.02em;
+    text-align: center;
+    color: #4a3118;
+    text-shadow: 0 1px 0 rgba(255, 245, 220, 0.6);
+    overflow-wrap: break-word;
+
+    scrollbar-width: thin;
+    scrollbar-color: rgba(166, 117, 51, 0.5) transparent;
+}
+.message-scroll::-webkit-scrollbar {
+    width: 8px;
+}
+.message-scroll::-webkit-scrollbar-track {
+    background: rgba(166, 117, 51, 0.12);
+    border-radius: 4px;
+    margin: 4px 0;
+}
+.message-scroll::-webkit-scrollbar-thumb {
+    background: rgba(166, 117, 51, 0.55);
+    border-radius: 4px;
+}
+.message-scroll::-webkit-scrollbar-thumb:hover {
+    background: rgba(166, 117, 51, 0.85);
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 900px) {
+    .scene {
+        flex-direction: column;
+        gap: 2rem;
+        padding: 1rem;
+    }
+    .character-wrap { order: 1; }
+
+    .message {
+        order: 2;
+        flex: 0 1 auto;
+        max-height: 55vh;
+    }
+}
+
+@media (max-width: 600px) {
+    .envelope-svg { width: 160px; }
+    .envelope-glow { width: 240px; height: 240px; }
+    .charge-ring  { width: 210px; height: 210px; }
+    .hint { font-size: 0.85rem; letter-spacing: 0.16em; }
+
+    .character { width: 170px; }
+    .glow      { width: 260px; height: 260px; }
+
+    .message {
+        padding: 1.6rem 1.5rem 1.8rem;
+        max-height: 52vh;
+    }
+    .message-title {
+        font-size: 1.15rem;
+        letter-spacing: 0.1em;
+        margin-bottom: 0.8rem;
+        padding-bottom: 0.7rem;
+    }
+    .message-scroll {
+        padding-right: 8px;
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+
+    #mountains { height: 38vh; }
+    .flower { transform: scale(0.85); }
+    .flower.is-lit { transform: scale(1); }
+}

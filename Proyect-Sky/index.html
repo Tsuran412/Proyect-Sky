@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Un mensaje de luz</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <canvas id="particles"></canvas>
+
+    <!-- ============ MONTAÑAS BRUMOSAS ============ -->
+    <svg id="mountains" viewBox="0 0 1200 300" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+        <path class="mountain-back"
+              d="M0 180 Q 80 130 160 160 T 320 140 Q 400 100 480 150 T 640 130 Q 720 90 800 140 T 960 120 Q 1040 100 1120 150 T 1200 140 L1200 300 L0 300 Z"/>
+        <path class="mountain-mid"
+              d="M0 220 Q 100 180 200 210 T 400 195 Q 500 165 600 205 T 800 190 Q 900 170 1000 205 T 1200 200 L1200 300 L0 300 Z"/>
+        <path class="mountain-front"
+              d="M0 260 Q 120 230 240 250 T 480 240 Q 600 220 720 250 T 960 235 Q 1080 225 1200 245 L1200 300 L0 300 Z"/>
+    </svg>
+
+    <!-- ============ FLORES LUMINOSAS ============ -->
+    <div id="flowers">
+        <button class="flower" style="left: 5%;  bottom: 30px; width: 42px; height: 42px;" aria-label="Flor de luz">
+            <svg viewBox="0 0 60 60">
+                <g class="petals">
+                    <ellipse cx="30" cy="14" rx="7" ry="13"/>
+                    <ellipse cx="30" cy="14" rx="7" ry="13" transform="rotate(72 30 30)"/>
+                    <ellipse cx="30" cy="14" rx="7" ry="13" transform="rotate(144 30 30)"/>
+                    <ellipse cx="30" cy="14" rx="7" ry="13" transform="rotate(216 30 30)"/>
+                    <ellipse cx="30" cy="14" rx="7" ry="13" transform="rotate(288 30 30)"/>
+                </g>
+                <circle class="flower-center" cx="30" cy="30" r="7"/>
+            </svg>
+        </button>
+        <button class="flower" style="left: 13%; bottom: 18px; width: 30px; height: 30px;" aria-label="Flor de luz">
+            <svg viewBox="0 0 60 60">
+                <g class="petals">
+                    <ellipse cx="30" cy="14" rx="7" ry="13"/>
+                    <ellipse cx="30" cy="14" rx="7" ry="13" transform="rotate(72 30 30)"/>
+                    <ellipse cx="30" cy="14" rx="7" ry="13" transform="rotate(144 30 30)"/>
+                    <ellipse cx="30" cy="14" rx="7" ry="13" transform="rotate(216 30 30)"/>
+                    <ellipse cx="30" cy="14" rx="7" ry="13" transform="rotate(288 30 30)"/>
+                </g>
+                <circle class="flower-center" cx="30" cy="30" r="7"/>
+            </svg>
+        </button>
+        <button class="flower" style="left: 22%; bottom: 32px; width: 46px; height: 46px;" aria-label="Flor de luz">
+            <svg viewBox="0 0 60 60">
+                <g class="petals">
+                    <ellipse cx="30" cy="14" rx="7" ry="13"/>
+                    <ellipse cx="30" cy="14" rx="7" ry="13" transform="rotate(72 30 30)"/>
+                    <ellipse cx="30" cy="14" rx="7" ry="13" transform="rotate(144 30 30)"/>
+                    <ellipse cx="30" cy="14" rx="7" ry="13" transform="rotate(216 30 30)"/>
+                    <ellipse cx="30" cy="14" rx="7" ry="13" transform="rotate(288 30 30)"/>
+                </g>
+                <circle class="flower-center" cx="30" cy="30" r="7"/>
+            </svg>
+        </button>
+        <button class="flower" style="left: 78%; bottom: 22px; width: 38px; height: 38px;" aria-label="Flor de luz">
+            <svg viewBox="0 0 60 60">
+                <g class="petals">
+                    <ellipse cx="30" cy="14" rx="7" ry="13"/>
+                    <ellipse cx="30" cy="14" rx="7" ry="13" transform="rotate(72 30 30)"/>
+                    <ellipse cx="30" cy="14" rx="7" ry="13" transform="rotate(144 30 30)"/>
+                    <ellipse cx="30" cy="14" rx="7" ry="13" transform="rotate(216 30 30)"/>
+                    <ellipse cx="30" cy="14" rx="7" ry="13" transform="rotate(288 30 30)"/>
+                </g>
+                <circle class="flower-center" cx="30" cy="30" r="7"/>
+            </svg>
+        </button>
+        <button class="flower" style="left: 88%; bottom: 36px; width: 52px; height: 52px;" aria-label="Flor de luz">
+            <svg viewBox="0 0 60 60">
+                <g class="petals">
+                    <ellipse cx="30" cy="14" rx="7" ry="13"/>
+                    <ellipse cx="30" cy="14" rx="7" ry="13" transform="rotate(72 30 30)"/>
+                    <ellipse cx="30" cy="14" rx="7" ry="13" transform="rotate(144 30 30)"/>
+                    <ellipse cx="30" cy="14" rx="7" ry="13" transform="rotate(216 30 30)"/>
+                    <ellipse cx="30" cy="14" rx="7" ry="13" transform="rotate(288 30 30)"/>
+                </g>
+                <circle class="flower-center" cx="30" cy="30" r="7"/>
+            </svg>
+        </button>
+        <button class="flower" style="left: 95%; bottom: 20px; width: 32px; height: 32px;" aria-label="Flor de luz">
+            <svg viewBox="0 0 60 60">
+                <g class="petals">
+                    <ellipse cx="30" cy="14" rx="7" ry="13"/>
+                    <ellipse cx="30" cy="14" rx="7" ry="13" transform="rotate(72 30 30)"/>
+                    <ellipse cx="30" cy="14" rx="7" ry="13" transform="rotate(144 30 30)"/>
+                    <ellipse cx="30" cy="14" rx="7" ry="13" transform="rotate(216 30 30)"/>
+                    <ellipse cx="30" cy="14" rx="7" ry="13" transform="rotate(288 30 30)"/>
+                </g>
+                <circle class="flower-center" cx="30" cy="30" r="7"/>
+            </svg>
+        </button>
+    </div>
+
+    <!-- ============ INTRO: SOBRE ============ -->
+    <div id="intro">
+        <div id="envelope" role="button" tabindex="0" aria-label="Mantén presionado para abrir el mensaje">
+            <div class="envelope-glow"></div>
+            <div class="charge-ring" aria-hidden="true"></div>
+
+            <svg class="envelope-svg" viewBox="0 0 200 140" aria-hidden="true">
+                <defs>
+                    <linearGradient id="envBody" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#fff8e8"/>
+                        <stop offset="100%" stop-color="#f0d9a8"/>
+                    </linearGradient>
+                    <linearGradient id="envFlap" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#ffeec2"/>
+                        <stop offset="100%" stop-color="#e8c37a"/>
+                    </linearGradient>
+                    <radialGradient id="sealGrad">
+                        <stop offset="0%" stop-color="#fffbe0" stop-opacity="1"/>
+                        <stop offset="45%" stop-color="#ffd966" stop-opacity="0.85"/>
+                        <stop offset="100%" stop-color="#ffaa22" stop-opacity="0"/>
+                    </radialGradient>
+                </defs>
+
+                <rect x="10" y="40" width="180" height="90" rx="6"
+                      fill="url(#envBody)" stroke="#d4a960" stroke-width="1.5"/>
+
+                <g class="envelope-flap">
+                    <path d="M 10 40 L 100 95 L 190 40 Z"
+                          fill="url(#envFlap)" stroke="#d4a960" stroke-width="1.5"/>
+                    <circle class="seal-glow" cx="100" cy="84" r="14" fill="url(#sealGrad)"/>
+                    <path class="seal"
+                          d="M100 76 L102 82 L108 84 L102 86 L100 92 L98 86 L92 84 L98 82 Z"
+                          fill="#fffbe0"/>
+                </g>
+            </svg>
+
+            <span class="hint">Press and hold 💖</span>
+        </div>
+    </div>
+
+    <!-- ============ ESCENA PRINCIPAL ============ -->
+    <div class="scene" id="mainScene">
+        <div class="character-wrap" id="characterWrap">
+            <div class="character-float">
+                <div class="glow"></div>
+                <img src="personaje.png" alt="Niño de la luz" class="character">
+            </div>
+        </div>
+
+        <!-- ✏️ AQUÍ VA TU MENSAJE — el título va fijo, el texto scrollea -->
+        <div class="message" id="message">
+            <h2 class="message-title">Words from my heart</h2>
+            <div class="message-scroll">
+                Hello, my love💕. Lately, I've had a lot on my mind—or rather, a lot weighing on my heart—and I needed a space like this to try and express it all. I've realized—I'm not even sure how—that you've become even more beautiful. Believe me, I look at your photos all the time 👀, so it's strange I didn't notice sooner! Haha 🤣. I'm also experiencing new feelings, and words just aren't enough to capture them, so I'm turning to a few phrases that convey at least some of what I want to say 😋. Last night, I was thinking about how lucky I am—even if you do think I'm just a total pervert 😡 (but that's another story!). Beyond my own family, you're someone who cares deeply about me 🤗. I've realized that you truly look out for me, offer advice, support me, and love me without judgment; that just goes to show what an incredible person you are 👩. I know I tell you this often, but it's the truth, and I want you to know it. I have to say, you have my heart completely, because I love you 💖. I want to give all this love to you—the person who appeared in my life one morning 🌅 for no apparent reason, where a simple "hello" started our whole story and brought our paths together. To put it another way: if you were to ask me how many times I've thought about you, I'd say only once—because you arrived and never left 😊. It's true that distance keeps us apart, but some loves are meant to last forever 💗, even without kisses, caresses, or physical encounters. If you fall, I'll pick you up; and if I can't, I'll simply lie down right beside you 💙. And if it turns out you aren't "the love of my life," then I must have ended up in the wrong life—but I certainly didn't choose the wrong love 💌. So thank you 😊 for being my partner 👫 and for loving me the way you do. I will give you the best of me, because I love being with you.
+                 .<br>
+                Your Jose —who is constantly looking for you, just like the guy reading this is looking for candles (by the way, he loves you too!) 😉<br>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
